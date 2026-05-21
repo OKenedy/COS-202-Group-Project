@@ -1,18 +1,17 @@
-import { Request, Response } from "express";
 import {
   comments,
   likes,
-  getNextCommentId,
-  Comment
-} from "../models/comments";
+  getNextCommentId
+} from "../models/comments.js";
+
 
 // Build threaded comment tree
-const buildCommentTree = (commentsList: Comment[]) => {
+const buildCommentTree = (commentsList) => {
   const commentMap = new Map();
-  const roots: any[] = [];
+  const roots = [];
 
   // Create copies with replies + likes
-  commentsList.forEach((comment: Comment) => {
+  commentsList.forEach((comment) => {
     commentMap.set(comment.id, {
       ...comment,
       replies: [],
@@ -38,10 +37,7 @@ const buildCommentTree = (commentsList: Comment[]) => {
 
 
 // Create comment
-export const createComment = (
-  req: Request,
-  res: Response
-) => {
+export const createComment = (req, res) => {
   const {
     postId,
     author,
@@ -55,7 +51,7 @@ export const createComment = (
     });
   }
 
-  const newComment: Comment = {
+  const newComment = {
     id: getNextCommentId(),
     postId,
     author,
@@ -74,10 +70,7 @@ export const createComment = (
 
 
 // Get comments for a post
-export const getComments = (
-  req: Request,
-  res: Response
-) => {
+export const getComments = (req, res) => {
   const postId = Number(req.params.postId);
 
   const postComments = comments.filter(
@@ -92,10 +85,7 @@ export const getComments = (
 
 
 // Delete comment
-export const deleteComment = (
-  req: Request,
-  res: Response
-) => {
+export const deleteComment = (req, res) => {
   const commentId = Number(req.params.commentId);
 
   const index = comments.findIndex(
@@ -119,10 +109,7 @@ export const deleteComment = (
 
 
 // Like comment
-export const likeComment = (
-  req: Request,
-  res: Response
-) => {
+export const likeComment = (req, res) => {
   const commentId = Number(req.params.commentId);
 
   const { user } = req.body;
@@ -142,10 +129,7 @@ export const likeComment = (
 
 
 // Unlike comment
-export const unlikeComment = (
-  req: Request,
-  res: Response
-) => {
+export const unlikeComment = (req, res) => {
   const commentId = Number(req.params.commentId);
 
   const { user } = req.body;
