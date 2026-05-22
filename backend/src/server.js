@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { urlencoded } from 'express';
 import postsRoutes from './routes/posts_routes.js'
 import { config } from 'dotenv'
 import { connectDB, disconnectDB } from './config/db.js'
@@ -6,10 +6,10 @@ import authRoutes from './routes/authRoutes.js'
 import posts_routes from './routes/posts_routes.js'
 
 
-app.use(express.json())
-
-
 const app = express()
+
+app.use(express.json())
+app.use(urlencoded({ extended: true }))
 
 config()
 connectDB()
@@ -17,7 +17,7 @@ connectDB()
 app.use('/posts', posts_routes)
 app.use('/auth', authRoutes)
 
-const PORT = 8080
+const PORT = 5001
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 })
@@ -44,5 +44,7 @@ process.on("SIGTERM", async () => {
         process.exit(0)
     })
 })
+
+//openssl rand -base64 32 for jwt secret key
 
 
