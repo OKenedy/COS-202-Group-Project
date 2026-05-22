@@ -8,7 +8,7 @@ import { ProfilePage } from './pages/ProfilePage.tsx';
 function App() {
   return (
     <Routes>
-      <Route path="/post" element={<PostPage />} />
+      <Route path="/post/:articleId?" element={<PostPage />} />
       <Route path="/" element={<HomePage />} />
       <Route path="/create" element={<CreatePage />} />
       <Route path="/profile" element={<ProfilePage />} />
