@@ -8,8 +8,8 @@ import { createPostSchema } from '../validators/postValidators.js'
 const router = express.Router()
 router.use(authMiddleware)
 
-router.get('/feed', getFeed)
-router.post('/feed+', validateRequest(createPostSchema), createPost)
+router.get('/fyp', getFeed)
+router.post('/feed', validateRequest(createPostSchema), createPost)
 router.delete('/:id', deletePost)
 router.put('/:id', updatePost)
 
