@@ -84,4 +84,11 @@ Ensure you have the following installed on your machine:
 - PostgreSQL
 - Git
 
+## 🚧 Future Improvements
+- Add image upload support for blog posts
+- Implement dark mode
+- Add user profile customization
+- Add bookmark/save feature
+- Deploy application online
+- Add notifications system
 
