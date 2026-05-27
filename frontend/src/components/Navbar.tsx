@@ -19,7 +19,7 @@ export function Navbar() {
           Write
         </Link>
         <Link
-          to="/profile"
+          to="/profile/Elena%20Vance"
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-600 no-underline transition hover:bg-gray-300"
           aria-label="Profile"
         >

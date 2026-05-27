@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type { BlogArticle } from '../data/articles.ts';
 
 type ArticleCardProps = {
@@ -6,11 +6,17 @@ type ArticleCardProps = {
 };
 
 export function ArticleCard({ article }: ArticleCardProps) {
+  const navigate = useNavigate();
+
   return (
-    <Link
-      to={`/post/${article.id}`}
-      className="block h-full overflow-hidden rounded-md border border-gray-100 bg-white text-inherit no-underline shadow-sm transition hover:border-gray-200 hover:shadow-md"
-    >
+    <div className="group relative h-full overflow-hidden rounded-md border border-gray-100 bg-white shadow-sm transition hover:border-gray-200 hover:shadow-md">
+      {/* Primary Link Overlay */}
+      <Link
+        to={`/post/${article.id}`}
+        className="absolute inset-0 z-0"
+        aria-label={article.title}
+      />
+      
       <article className="flex h-full flex-col">
         <img
           src={article.image}
@@ -26,10 +32,19 @@ export function ArticleCard({ article }: ArticleCardProps) {
           <p className="line-clamp-2 text-xs text-gray-500">{article.excerpt}</p>
 
           <div className="mt-auto text-[11px] text-gray-400">
-            {article.author} • {article.readTime}
+            <span
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                navigate(`/profile/${encodeURIComponent(article.author)}`);
+              }}
+              className="relative z-10 cursor-pointer hover:text-indigo-600 hover:underline"
+            >
+              {article.author}
+            </span> • {article.readTime}
           </div>
         </div>
       </article>
-    </Link>
+    </div>
   );
 }

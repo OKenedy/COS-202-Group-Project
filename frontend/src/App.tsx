@@ -11,7 +11,7 @@ function App() {
       <Route path="/post/:articleId?" element={<PostPage />} />
       <Route path="/" element={<HomePage />} />
       <Route path="/create" element={<CreatePage />} />
-      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/profile/:authorName?" element={<ProfilePage />} />
     </Routes>
   );
 }

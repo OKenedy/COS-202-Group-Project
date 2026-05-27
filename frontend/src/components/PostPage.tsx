@@ -1,5 +1,5 @@
 import { type FormEvent, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { articles } from '../data/articles.ts';
 import type { BlogArticle } from '../data/articles.ts';
 import { Footer } from './Footer.tsx';
@@ -121,13 +121,17 @@ export function PostPage() {
           <h1 className="text-2xl font-semibold leading-tight text-gray-900 md:text-[2rem]">{post.title}</h1>
 
           <div className="mt-6 flex items-center gap-3">
-            <img
-              src={post.authorAvatar}
-              alt=""
-              className="h-10 w-10 rounded-full object-cover"
-            />
+            <Link to={`/profile/${encodeURIComponent(post.author)}`} className="shrink-0 transition hover:opacity-80">
+              <img
+                src={post.authorAvatar}
+                alt=""
+                className="h-10 w-10 rounded-full object-cover"
+              />
+            </Link>
             <div>
-              <p className="text-sm font-medium text-gray-800">{post.author}</p>
+              <Link to={`/profile/${encodeURIComponent(post.author)}`} className="text-sm font-medium text-gray-800 no-underline hover:text-indigo-600 transition">
+                {post.author}
+              </Link>
               <p className="text-xs text-gray-500">{post.authorMeta}</p>
             </div>
           </div>
@@ -259,23 +263,27 @@ export function PostPage() {
 
           <section className="mt-10 rounded-md border border-gray-100 bg-[#fafafa] p-4 md:p-5">
             <div className="flex items-start gap-3">
-              <img
-                src={post.authorAvatar}
-                alt=""
-                className="h-10 w-10 rounded-md object-cover"
-              />
+              <Link to={`/profile/${encodeURIComponent(post.author)}`} className="shrink-0 transition hover:opacity-80">
+                <img
+                  src={post.authorAvatar}
+                  alt=""
+                  className="h-10 w-10 rounded-md object-cover"
+                />
+              </Link>
               <div>
-                <p className="text-sm font-semibold text-gray-900">{post.author}</p>
+                <Link to={`/profile/${encodeURIComponent(post.author)}`} className="text-sm font-semibold text-gray-900 no-underline hover:text-indigo-600 transition">
+                  {post.author}
+                </Link>
                 <p className="mt-1 text-xs leading-5 text-gray-500">
                   Author of design-philosophy essays and practical notes on digital focus. His writing explores how
                   minimal tools shape better thinking.
                 </p>
-                <button
-                  type="button"
-                  className="mt-3 text-xs font-semibold text-indigo-600 transition hover:text-indigo-500"
+                <Link
+                  to={`/profile/${encodeURIComponent(post.author)}`}
+                  className="mt-3 inline-block text-xs font-semibold text-indigo-600 no-underline transition hover:text-indigo-500"
                 >
                   View all publications
-                </button>
+                </Link>
               </div>
             </div>
           </section>
