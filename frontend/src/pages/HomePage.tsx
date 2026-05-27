@@ -50,6 +50,7 @@ export function HomePage() {
           >
             Load more stories
           </button>
+          
         </div>
 
         <Footer />

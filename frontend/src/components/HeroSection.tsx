@@ -3,7 +3,7 @@ const tags = ['#Lifestyle', '#Digitalnomad', '#AdventureCapital'];
 export function HeroSection() {
   return (
     <section className="mb-12 text-center">
-      <p className="mb-5 text-sm text-gray-500">Your best blogging platform</p>
+      <p className="mb-5 text-4xl text-black font-bold">Your <span className="text-indigo-600">best blogging</span> platform</p>
 
       <div className="mx-auto mb-5 flex w-full max-w-xl items-center rounded-md border border-gray-200 px-3 py-2">
         <svg
@@ -24,7 +24,7 @@ export function HeroSection() {
         />
       </div>
 
-      <p className="mb-3 text-xs uppercase tracking-wide text-gray-400">Trending now</p>
+      <p className="mb-3 text-lg uppercase tracking-wide font-bold text-black">Trending now</p>
       <div className="flex flex-wrap items-center justify-center gap-2">
         {tags.map((tag) => (
           <span
