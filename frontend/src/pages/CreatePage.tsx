@@ -4,15 +4,12 @@ import { PageLayout } from '../components/PageLayout.tsx';
 
 export function CreatePage() {
   const [visibility, setVisibility] = useState<'Public' | 'Private'>('Public');
-  const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState(['Design', 'Minimalism']);
+  const [tags, setTags] = useState(['Lifestyle']);
 
-  const handleAddTag = () => {
-    const cleanTag = tagInput.trim();
-    if (!cleanTag) return;
-    if (tags.includes(cleanTag)) return;
-    setTags((currentTags) => [...currentTags, cleanTag]);
-    setTagInput('');
+  const handleSelectTag = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedTag = event.target.value;
+    if (!selectedTag || tags.includes(selectedTag)) return;
+    setTags((currentTags) => [...currentTags, selectedTag]);
   };
 
   const handleRemoveTag = (tagToRemove: string) => {
@@ -100,28 +97,17 @@ export function CreatePage() {
 
           <div className="mb-6">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Categories & tags</p>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={tagInput}
-                onChange={(event) => setTagInput(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter') {
-                    event.preventDefault();
-                    handleAddTag();
-                  }
-                }}
-                placeholder="Add a tag..."
-                className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm outline-none placeholder:text-gray-400 focus:border-gray-300"
-              />
-              <button
-                type="button"
-                onClick={handleAddTag}
-                className="rounded-md border border-gray-200 px-3 text-sm text-gray-600 hover:bg-gray-50"
-              >
-                Add
-              </button>
-            </div>
+            <select
+              onChange={handleSelectTag}
+              value=""
+              className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 outline-none focus:border-gray-300"
+            >
+              <option value="" disabled>Select a category...</option>
+              <option value="Technology">Technology</option>
+              <option value="Startup">Startup</option>
+              <option value="Lifestyle">Lifestyle</option>
+              <option value="Finance">Finance</option>
+            </select>
 
             <div className="mt-3 flex flex-wrap gap-2">
               {tags.map((tag) => (
