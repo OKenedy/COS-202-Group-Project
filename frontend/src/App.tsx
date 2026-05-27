@@ -4,6 +4,8 @@ import { PostPage } from './components/PostPage.tsx';
 import { CreatePage } from './pages/CreatePage.tsx';
 import { HomePage } from './pages/HomePage.tsx';
 import { ProfilePage } from './pages/ProfilePage.tsx';
+import { LoginPage } from './pages/LoginPage.tsx';
+import { SignupPage } from './pages/SignupPage.tsx';
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/create" element={<CreatePage />} />
       <Route path="/profile/:authorName?" element={<ProfilePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
     </Routes>
   );
 }

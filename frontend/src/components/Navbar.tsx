@@ -13,6 +13,12 @@ export function Navbar() {
 
       <div className="flex items-center gap-3">
         <Link
+          to="/login"
+          className="text-xs font-medium text-gray-600 no-underline hover:text-gray-900 transition-colors"
+        >
+          Sign In
+        </Link>
+        <Link
           to="/create"
           className="rounded-md bg-indigo-600 px-4 py-2 text-xs font-semibold text-white no-underline transition hover:bg-indigo-500"
         >
