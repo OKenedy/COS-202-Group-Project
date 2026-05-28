@@ -6,20 +6,17 @@ import { PageLayout } from '../components/PageLayout.tsx';
 export function CreatePage() {
   const [visibility, setVisibility] = useState<'Draft' | 'Publish'>('Draft');
 
-  const [tags, setTags] = useState(['Lifestyle']);
+  const [selectedCategory, setSelectedCategory] = useState<string>('Lifestyle');
 
   const handleSelectTag = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedTag = event.target.value;
-
-    if (!selectedTag || tags.includes(selectedTag)) return;
-
-    setTags((currentTags) => [...currentTags, selectedTag]);
+    const value = event.target.value;
+    if (value) {
+      setSelectedCategory(value);
+    }
   };
 
-  const handleRemoveTag = (tagToRemove: string) => {
-    setTags((currentTags) =>
-      currentTags.filter((tag) => tag !== tagToRemove)
-    );
+  const handleRemoveTag = () => {
+    setSelectedCategory('');
   };
 
   return (
@@ -73,7 +70,7 @@ export function CreatePage() {
 
             <select
               onChange={handleSelectTag}
-              value=""
+              value={selectedCategory}
               className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 outline-none focus:border-gray-300"
             >
               <option value="" disabled>
@@ -87,16 +84,15 @@ export function CreatePage() {
             </select>
 
             <div className="mt-3 flex flex-wrap gap-2">
-              {tags.map((tag) => (
+              {selectedCategory && (
                 <button
-                  key={tag}
                   type="button"
-                  onClick={() => handleRemoveTag(tag)}
+                  onClick={handleRemoveTag}
                   className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 hover:bg-gray-200"
                 >
-                  {tag} ×
+                  {selectedCategory} ×
                 </button>
-              ))}
+              )}
             </div>
           </div>
 

@@ -95,16 +95,16 @@ function ProfileStoryRow({ article, date }: { article: BlogArticle; date: string
   );
 }
 
-function ProfileFooter({ name }: { name: string }) {
+function ProfileFooter() {
   return (
     <footer className="border-t border-gray-100 p-6 md:p-10 pt-10">
       <div className="flex flex-col justify-between gap-8 text-sm text-gray-500 md:flex-row md:items-end">
         <div>
-          <p className="text-base font-semibold tracking-wide text-[#111] uppercase">{name.split(' ')[0] || 'MUSK'}</p>
+          <p className="text-base font-semibold tracking-wide text-[#111]">MUSK</p>
           <p className="mt-2 max-w-sm text-xs leading-relaxed text-gray-500">
             Crafting stories and ideas for the modern reader. Discover high-quality articles across inspiring themes.
           </p>
-          <p className="mt-4 text-xs text-gray-400">© 2026 {name.toUpperCase()}. All rights reserved.</p>
+          <p className="mt-4 text-xs text-gray-400">© 2026 MUSK. All rights reserved.</p>
         </div>
         <div className="grid grid-cols-2 gap-10 text-xs">
           <div className="space-y-2">
@@ -138,6 +138,7 @@ export function ProfilePage() {
     bio: 'Creative Director & Design Philosopher. Exploring the intersection of digital ethics, minimalist aesthetics, and the future of human-computer interaction. Currently archiving thoughts on Lumina.',
     location: 'San Francisco',
     website: currentAuthorName.toLowerCase().replace(/\s+/g, '') + '.design',
+    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(currentAuthorName)}&background=8b5cf6&color=fff&size=200`
   });
 
   // Demo: update profile data if URL authorName changes
@@ -145,7 +146,8 @@ export function ProfilePage() {
     setProfileData(prev => ({
       ...prev,
       name: currentAuthorName,
-      website: currentAuthorName.toLowerCase().replace(/\s+/g, '') + '.design'
+      website: currentAuthorName.toLowerCase().replace(/\s+/g, '') + '.design',
+      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(currentAuthorName)}&background=8b5cf6&color=fff&size=200`
     }));
   }, [currentAuthorName]);
 
@@ -207,37 +209,50 @@ export function ProfilePage() {
           </div>
 
           <div className="mt-auto pt-10">
-            <button
-              type="button"
-              className="w-full rounded-md bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-500"
+            <Link
+              to="/signup"
+              className="block w-full rounded-md bg-violet-600 px-4 py-2.5 text-center text-sm font-semibold text-white no-underline shadow-sm transition hover:bg-violet-500"
             >
               Become a member
-            </button>
+            </Link>
           </div>
         </aside>
 
         <main className="flex-1 p-6 md:p-10">
           <div className="mx-auto max-w-3xl">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-              <img
-                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(profileData.name)}&background=8b5cf6&color=fff&size=200`}
-                alt=""
-                className="h-24 w-24 shrink-0 rounded-xl object-cover sm:h-28 sm:w-28"
-              />
+              <div className="relative group h-24 w-24 shrink-0 sm:h-28 sm:w-28">
+                <img
+                  src={profileData.avatar}
+                  alt=""
+                  className="h-full w-full rounded-xl object-cover"
+                />
+                {isEditing && (
+                  <button 
+                    type="button"
+                    className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/40 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                    aria-label="Change photo"
+                  >
+                    <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </button>
+                )}
+              </div>
               <div className="min-w-0 flex-1">
                 {isEditing ? (
                   <div className="space-y-4">
-                    <input
-                      type="text"
-                      value={profileData.name}
-                      onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
-                      className="w-full rounded-md border border-gray-300 px-3 py-2 font-serif text-2xl font-semibold outline-none focus:ring-2 focus:ring-violet-500"
-                    />
+                    <div className="flex flex-wrap items-center gap-3">
+                      <h1 className="font-serif text-3xl font-semibold tracking-tight text-[#111] sm:text-4xl">{profileData.name}</h1>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 bg-gray-100 px-2 py-0.5 rounded">Cannot Change</span>
+                    </div>
                     <textarea
                       value={profileData.bio}
                       onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
                       className="w-full rounded-md border border-gray-300 px-3 py-2 text-[15px] outline-none focus:ring-2 focus:ring-violet-500"
                       rows={3}
+                      placeholder="Write your bio..."
                     />
                     <div className="flex gap-4">
                       <input
@@ -391,7 +406,7 @@ export function ProfilePage() {
         </main>
       </div>
 
-      <ProfileFooter name={profileData.name} />
+      <ProfileFooter />
     </PageLayout>
   );
 }
