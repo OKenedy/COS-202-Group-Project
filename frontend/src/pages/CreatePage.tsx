@@ -121,9 +121,9 @@ export function CreatePage() {
               <button
                 type="button"
                 onClick={() => setVisibility('Draft')}
-                className={`w-full rounded-md border px-3 py-2 text-left text-sm hover:cursor-pointer ${
+                className={`w-full rounded-md border transition-all duration-300 ease-in-out px-3 py-2 text-left text-sm hover:cursor-pointer hover:border-indigo-600 ${
                   visibility === 'Draft'
-                    ? 'bg-indigo-500 text-white'
+                    ? 'border-indigo-500 bg-indigo-500 text-white'
                     : 'border-gray-200 text-gray-500'
                 }`}
               >
@@ -131,14 +131,14 @@ export function CreatePage() {
               </button>
 
               <button
-                type="button"
-                onClick={() => setVisibility('Publish')}
-                className={`w-full rounded-md border px-3 py-2 text-left text-sm ${
-                  visibility === 'Publish'
-                    ? 'border-indigo-500 text-indigo-600'
-                    : 'border-gray-200 text-gray-500'
-                }`}
-              >
+  type="button"
+  onClick={() => setVisibility('Publish')}
+  className={`w-full rounded-md border transition-all duration-300 ease-in-out px-3 py-2 text-left text-sm hover:cursor-pointer hover:border-indigo-600 ${
+    visibility === 'Publish'
+      ? 'border-indigo-500 bg-indigo-500 text-white'
+      : 'border-gray-200 text-gray-500'
+  }`}
+>
                 Publish
               </button>
 
