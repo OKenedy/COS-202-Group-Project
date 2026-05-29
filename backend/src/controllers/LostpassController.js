@@ -1,7 +1,7 @@
 const crypto = require("crypto")
 import { prisma } from "../config/db.js"
 import bcrypt from "bcryptjs"
-const { sendPasswordResetEmail } = require("../services/mail.service")
+import { sendPasswordResetEmail } from "../../utils/mailservice.js"
 
 
 export const forgotPassword = async (req, res) => {
