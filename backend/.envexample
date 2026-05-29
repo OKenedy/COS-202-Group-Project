@@ -1,9 +1,7 @@
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=  "from mail host"
-MAIL_USER= your@gmail.com
-MAIL_PASS= your_app_password
-CLIENT_URL= "your frontend url"
 DATABASE_URL=
 NODE_ENV=
 JWT_SECRET=
 JWT_EXPIRES_IN=
+MAIL_PASS=re_xxxxxxxxxxxxxx
+
+CLIENT_URL=http://localhost:5001

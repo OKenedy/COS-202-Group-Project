@@ -1,4 +1,4 @@
-const crypto = require("crypto")
+import crypto from "crypto"
 import { prisma } from "../config/db.js"
 import bcrypt from "bcryptjs"
 import { sendPasswordResetEmail } from "../../utils/mailservice.js"

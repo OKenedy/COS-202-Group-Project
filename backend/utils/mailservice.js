@@ -1,22 +1,15 @@
-import nodemailer from "nodemailer"
+import { Resend } from "resend"
 
-const transporter = nodemailer.createTransport({
-    host: process.env.MAIL_HOST,
-    port: Number(process.env.MAIL_PORT),
-    auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
-    },
-})
+const resend = new Resend(process.env.MAIL_PASS)
 
 export const sendPasswordResetEmail = async (email, resetToken) => {
-    const resetURL = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`
+  const resetURL = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`
 
-    await transporter.sendMail({
-        from: `"Support" <${process.env.MAIL_USER}>`,
-        to: email,
-        subject: "Password Reset Request",
-        html: `
+  await resend.emails.send({
+    from: "Support <nonreply@Musk.com>", // use your domain here if you added one
+    to: email,
+    subject: "Password Reset Request",
+    html: `
       <h2>Forgot your password?</h2>
       <p>Click the link below to reset it. This link expires in <strong>15 minutes</strong>.</p>
       <a href="${resetURL}" style="
@@ -31,5 +24,5 @@ export const sendPasswordResetEmail = async (email, resetToken) => {
       </a>
       <p>If you didn't request this, you can safely ignore this email.</p>
     `,
-    })
+  })
 }
