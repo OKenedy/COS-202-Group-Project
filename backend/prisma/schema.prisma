@@ -13,17 +13,18 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  name      String?
-  password  String
-  posts     Post[]
-  createdAt DateTime  @default(now())
-  comments  Comment[]
-  avatar    String? // URL e.g. "https://cdn.example.com/avatar.jpg"
-
-  following Follow[] @relation("following")
-  followers Follow[] @relation("followers")
+  id               Int       @id @default(autoincrement())
+  email            String    @unique
+  name             String?
+  password         String
+  posts            Post[]
+  createdAt        DateTime  @default(now())
+  comments         Comment[]
+  avatar           String? // URL e.g. "https://cdn.example.com/avatar.jpg"
+  resetToken       String? // For password reset functionality
+  resetTokenExpiry DateTime?
+  following        Follow[]  @relation("following")
+  followers        Follow[]  @relation("followers")
 }
 
 model Post {
