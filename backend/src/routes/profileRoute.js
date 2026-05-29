@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { getProfile } from "../controllers/profileController.js";
+import { Router } from "express"
+import { getProfile } from "../controllers/profileController.js"
 
-const router = Router();
+const router = Router()
 
-router.get("/profile/:id", getProfile);
+router.get("/profile/:id", getProfile)
 
-export default router;
+export default router

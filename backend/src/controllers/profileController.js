@@ -1,11 +1,11 @@
 import { prisma } from '../config/db.js'
 
 export const getProfile = async (req, res) => {
-    const { id } = req.params;
-    const userId = parseInt(id);
+    const { id } = req.params
+    const userId = parseInt(id)
 
     if (isNaN(userId)) {
-        return res.status(400).json({ error: "Invalid user ID." });
+        return res.status(400).json({ error: "Invalid user ID." })
     }
 
     try {
@@ -26,10 +26,10 @@ export const getProfile = async (req, res) => {
                     orderBy: { createdAt: "desc" },
                 },
             },
-        });
+        })
 
         if (!user) {
-            return res.status(404).json({ error: "User not found." });
+            return res.status(404).json({ error: "User not found." })
         }
 
         return res.status(200).json({
@@ -39,9 +39,9 @@ export const getProfile = async (req, res) => {
             followers: user._count.followers,
             following: user._count.following,
             posts: user.posts,
-        });
+        })
     } catch (error) {
-        console.error("Error fetching profile:", error);
-        return res.status(500).json({ error: "Internal server error." });
+        console.error("Error fetching profile:", error)
+        return res.status(500).json({ error: "Internal server error." })
     }
 };
