@@ -1,0 +1,26 @@
+@keyframes rotateWord {
+    0% {
+      transform: translateX(-200px) translateY(0px) rotate(0deg);
+    }
+  
+    25% {
+      transform: translateX(0px) translateY(-30px) rotate(90deg);
+    }
+  
+    50% {
+      transform: translateX(200px) translateY(0px) rotate(180deg);
+    }
+  
+    75% {
+      transform: translateX(0px) translateY(30px) rotate(270deg);
+    }
+  
+    100% {
+      transform: translateX(-200px) translateY(0px) rotate(360deg);
+    }
+  }
+  
+  .animate-rotateWord {
+    display: inline-block;
+    animation: rotateWord 6s linear infinite;
+  }
