@@ -9,7 +9,7 @@ const router = express.Router()
 router.use(authMiddleware)
 
 router.get('/fyp', getFeed)
-router.post('/feed', validateRequest(createPostSchema), createPost)
+router.post('/create', validateRequest(createPostSchema), createPost)
 router.delete('/:id', deletePost)
 router.put('/:id', updatePost)
 
