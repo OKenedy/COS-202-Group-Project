@@ -8,7 +8,7 @@ export function Navbar() {
         to="/"
         className="text-lg font-semibold tracking-wide text-[#151515] no-underline hover:text-gray-800"
       >
-        MUSK
+        MUSE
       </Link>
 
       <div className="flex items-center gap-3">

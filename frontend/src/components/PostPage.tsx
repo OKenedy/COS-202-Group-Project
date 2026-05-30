@@ -5,6 +5,7 @@ import type { BlogArticle } from '../data/articles.ts';
 import { Footer } from './Footer.tsx';
 import { Navbar } from './Navbar.tsx';
 import { PageLayout } from './PageLayout.tsx';
+import { useSavedPosts } from '../hooks/useSavedPosts.ts';
 
 type CommentEntry = {
   id: string;
@@ -64,7 +65,10 @@ function resolveArticle(articleId: string | undefined): BlogArticle | undefined 
 
 export function PostPage() {
   const { articleId } = useParams();
+  const { toggleSave, isSaved } = useSavedPosts();
   const article = useMemo(() => resolveArticle(articleId), [articleId]);
+
+  const saved = article ? isSaved(article.id) : false;
 
   const post = useMemo(() => {
     if (!article) {
@@ -171,6 +175,19 @@ export function PostPage() {
               >
                 Share
               </button>
+              {article && (
+                <button
+                  type="button"
+                  onClick={() => toggleSave(article.id)}
+                  className={`rounded-md border px-3.5 py-2 text-xs font-medium transition md:text-sm ${
+                    saved
+                      ? 'border-indigo-600 bg-indigo-50 text-indigo-600'
+                      : 'border-gray-200 text-gray-700 hover:border-gray-300 hover:text-gray-900'
+                  }`}
+                >
+                  {saved ? 'Saved' : 'Save'}
+                </button>
+              )}
             </div>
           </div>
 
@@ -275,7 +292,7 @@ export function PostPage() {
                   {post.author}
                 </Link>
                 <p className="mt-1 text-xs leading-5 text-gray-500">
-                  Author of design-philosophy essays and practical notes on digital focus. His writing explores how
+                  Author of design-philosophy essays and practical note on digital focus. His writing explores how
                   minimal tools shape better thinking.
                 </p>
                 <Link

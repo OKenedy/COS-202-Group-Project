@@ -4,8 +4,11 @@ import { Navbar } from '../components/Navbar.tsx';
 import { PageLayout } from '../components/PageLayout.tsx';
 import { articles } from '../data/articles.ts';
 import type { BlogArticle } from '../data/articles.ts';
+import { useSavedPosts } from '../hooks/useSavedPosts.ts';
 
 const topics = [
+// ... (rest of topics)
+
   {
     label: 'Technology',
     icon: (
@@ -45,9 +48,12 @@ const topics = [
   },
 ];
 
-type ProfileTab = 'published' | 'highlights' | 'drafts';
+type ProfileTab = 'published' | 'saved' | 'drafts';
 
 function ProfileStoryRow({ article, date }: { article: BlogArticle; date: string }) {
+  const { toggleSave, isSaved } = useSavedPosts();
+  const saved = isSaved(article.id);
+
   return (
     <article className="flex flex-col gap-5 border-b border-gray-100 py-8 last:border-b-0 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
       <div className="min-w-0 flex-1">
@@ -64,13 +70,17 @@ function ProfileStoryRow({ article, date }: { article: BlogArticle; date: string
           <time dateTime={date}>{date}</time>
           <button
             type="button"
-            className="rounded p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
-            aria-label="Save story"
+            onClick={() => toggleSave(article.id)}
+            className={`rounded p-1 transition hover:bg-gray-100 ${
+              saved ? 'text-indigo-600' : 'text-gray-400 hover:text-gray-700'
+            }`}
+            aria-label={saved ? "Unsave story" : "Save story"}
           >
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8" aria-hidden>
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
           </button>
+
           <button
             type="button"
             className="rounded p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
@@ -100,11 +110,11 @@ function ProfileFooter() {
     <footer className="border-t border-gray-100 p-6 md:p-10 pt-10">
       <div className="flex flex-col justify-between gap-8 text-sm text-gray-500 md:flex-row md:items-end">
         <div>
-          <p className="text-base font-semibold tracking-wide text-[#111]">MUSK</p>
+          <p className="text-base font-semibold tracking-wide text-[#111]">MUSE</p>
           <p className="mt-2 max-w-sm text-xs leading-relaxed text-gray-500">
             Crafting stories and ideas for the modern reader. Discover high-quality articles across inspiring themes.
           </p>
-          <p className="mt-4 text-xs text-gray-400">© 2026 MUSK. All rights reserved.</p>
+          <p className="mt-4 text-xs text-gray-400">© 2026 MUSE. All rights reserved.</p>
         </div>
         <div className="grid grid-cols-2 gap-10 text-xs">
           <div className="space-y-2">
@@ -127,6 +137,7 @@ function ProfileFooter() {
 export function ProfilePage() {
   const { authorName } = useParams();
   const currentAuthorName = authorName ? decodeURIComponent(authorName) : 'Elena Vance';
+  const { savedIds } = useSavedPosts();
 
   const [tab, setTab] = useState<ProfileTab>('published');
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
@@ -158,6 +169,15 @@ export function ProfilePage() {
     }));
   }, [currentAuthorName]);
 
+  const savedArticles = useMemo(() => {
+    return articles
+      .filter((a) => savedIds.includes(a.id))
+      .map((article, i) => ({
+        article,
+        date: ['Apr 14, 2026', 'Mar 22, 2026', 'Feb 8, 2026', 'Jan 15, 2026'][i % 4] ?? 'Jan 1, 2026',
+      }));
+  }, [savedIds]);
+
   const filteredFeed = authorArticles.filter(({ article }) => {
     if (!selectedTopic) return true;
     const articleCat = article.category.toLowerCase().replace(/\s+/g, '');
@@ -166,12 +186,11 @@ export function ProfilePage() {
   });
 
   return (
-    <PageLayout mainClassName="flex flex-col p-0 text-[#1a1a1a]">
-      <div className="border-b border-gray-100 p-6 md:p-10">
-        <Navbar />
-      </div>
+    <PageLayout mainClassName="flex flex-col text-[#1a1a1a]">
+      <Navbar />
 
-      <div className="flex">
+      <div className="flex border-t border-gray-100">
+
         <aside className="hidden w-[220px] shrink-0 border-r border-gray-100 bg-[#f9f9f9] px-5 py-8 md:flex md:flex-col lg:w-[260px] lg:px-7">
           <div>
             <p className="font-semibold tracking-tight text-[#111]">Library</p>
@@ -208,14 +227,6 @@ export function ProfilePage() {
             </nav>
           </div>
 
-          <div className="mt-auto pt-10">
-            <Link
-              to="/signup"
-              className="block w-full rounded-md bg-violet-600 px-4 py-2.5 text-center text-sm font-semibold text-white no-underline shadow-sm transition hover:bg-violet-500"
-            >
-              Become a member
-            </Link>
-          </div>
         </aside>
 
         <main className="flex-1 p-6 md:p-10">
@@ -361,7 +372,7 @@ export function ProfilePage() {
                 {(
                   [
                     { id: 'published' as const, label: 'Published' },
-                    { id: 'highlights' as const, label: 'Highlights' },
+                    { id: 'saved' as const, label: 'Saved' },
                     { id: 'drafts' as const, label: 'Drafts' },
                   ] as const
                 ).map(({ id, label }) => (
@@ -373,7 +384,7 @@ export function ProfilePage() {
                     onClick={() => setTab(id)}
                     className={`-mb-px border-b-2 pb-3 text-sm font-medium transition ${
                       tab === id
-                        ? 'border-[#111] text-[#111]'
+                        ? 'border-indigo-600 text-indigo-600'
                         : 'border-transparent text-gray-500 hover:text-gray-800'
                     }`}
                   >
@@ -394,8 +405,16 @@ export function ProfilePage() {
                     )}
                   </div>
                 )}
-                {tab === 'highlights' && (
-                  <p className="py-14 text-center text-sm text-gray-500">No highlighted stories yet.</p>
+                {tab === 'saved' && (
+                  <div>
+                    {savedArticles.length > 0 ? (
+                      savedArticles.map(({ article, date }) => (
+                        <ProfileStoryRow key={article.id} article={article} date={date} />
+                      ))
+                    ) : (
+                      <p className="py-14 text-center text-sm text-gray-500">No saved stories yet.</p>
+                    )}
+                  </div>
                 )}
                 {tab === 'drafts' && (
                   <p className="py-14 text-center text-sm text-gray-500">No drafts saved.</p>
@@ -410,3 +429,4 @@ export function ProfilePage() {
     </PageLayout>
   );
 }
+
